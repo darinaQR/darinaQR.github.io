@@ -1,1 +1,60 @@
-<h1>hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>QR code от Дарихи</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+  <!-- <script type="text/javascript" src="jquery.min.js"></script> -->
+  <script type="text/javascript" src="qrcode.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <input id="text" type="text" value="" /><br />
+  <div class="wrap" id="wrap">
+    <div id="qrcode"></div>
+    <div class="photo"></div>
+  </div>
+
+  <button class="btn">СОЗДАТЬ QRCode</button>
+
+  <script type="text/javascript">//Открываем тег со скриптами, которые будут описывать логику нашего приложения. 
+    var qrcode = new QRCode(document.getElementById("qrcode"), { // Создаем экземпляр объекта на основе JavaScript библиотеки по генерации QR кода.
+      width: 150, // Задаем размеры QR кода в пикселях.                                              
+      height: 150,
+    });
+
+    function makeCode() { // Описываем функцию, которая будет получать данные и генерировать QR код.
+      var elText = document.getElementById("text"); // Получаем данные со страницы, которые ввел пользователь. 
+      let text = `https://yandex.ru/search/?lr=10894&text=${elText.value}`; // Вставляем данные, введенные пользователем, в поисковую https-строку Яндекса.
+
+      qrcode.makeCode(text); // Передаем поисковую строку в созданный объект по генерации QR кода. Именно с этим текстом будет сгенерирован QR код.
+    }
+
+
+    const btn = document.querySelector(".btn"); // Получаем кнопку со страницы.
+    const photo = document.querySelector(".photo"); // Получаем блок с фото со страницы. 
+
+    function randomInteger(min, max) { // Описываем функцию, которая будет возвращать случайное число в заданном диапазоне. 
+      let rand = min - 0.5 + Math.random() * (max - min + 1);
+      return Math.round(rand);
+    }
+
+    btn.addEventListener("click", () => { // Описываем действия, которые будут происходить при нажатии кнопки на странице.
+
+      let num = randomInteger(1, 8); // В переменную num записываем случайное число от 1 до 8. 
+                                     //(Число восемь потому, что в нашем приложении используется 8 фото)
+      photo.style.backgroundImage = `url("./img/${num}.jpeg")`; // Блоку с фото устанавливаем фон. В качестве фона используется одно из восьми фото. 
+                                                                // Какое именно будет фото, зависит от получившегося случайного числа.
+
+      document.getElementById("wrap").style.opacity = "0"; // Манипулируем прозрачностью для того, чтоб добиться приятной визуальной плавности.
+      setTimeout(() => {
+        document.getElementById("wrap").style.opacity = "1";
+        makeCode(); // Вызываем функцию, описанную ранее, которая сгенерирует необходимый QR код. 
+      }, 1010);
+    });
+  </script>
+</body>
+
+</html>
